@@ -19,6 +19,28 @@ class QuizServiceTest {
 		service = new QuizService();
 	}
 
+
+	@Test
+	void whenCallingGetAll_thenReturnThreeDefaultQuestions() {
+		List<Question> result = service.getAll();
+		assertEquals(3, result.size());
+	}
+
+	@Test
+	void whenAddingValidQuestion_thenAssignsNextId() {
+		Question q = new Question("Was ist Java?", Arrays.asList("Sprache", "Insel", "Auto"), "Sprache");
+		Question result = service.add(q);
+		assertEquals(4, result.getId());
+	}
+
+	@Test
+	void whenDeletingNonExistentQuestion_thenNoChangeOccurs() {
+		int initialSize = service.getAll().size();
+		service.deleteById(999);
+		assertEquals(initialSize, service.getAll().size());
+	}
+
+
 	@Test
 	void getAll_returns3Questions() {
 		// Arrange
