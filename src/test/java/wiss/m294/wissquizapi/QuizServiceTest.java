@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import wiss.m294.wissquizapi.model.Question;
 
 class QuizServiceTest {
-	// TZest
-
+	
 	QuizService service;
 
 	@BeforeEach
