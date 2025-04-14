@@ -23,38 +23,30 @@ class QuizServiceTest {
 
 	@Test
 	void getAll_returns3Questions() {
-		// Arrange
 
-		// Act
 		List<Question> result = service.getAll();
 
-		// Assert
 		assertNotNull(result);
 		assertEquals(3, result.size());
 	}
 
 	@Test
 	void WithNewObject_add_returnsObjectWithId4() {
-		// Arrange
+
 		Question newQuestion = new Question("Was ist Java?", Arrays.asList("Sprache", "Insel", "Auto"), "Sprache");
 
-		// Act
 		Question result = service.add(newQuestion);
 
-		// Assert
 		assertNotNull(result);
 		assertEquals(4, result.getId());
 	}
 
 	@Test
 	void WithId2_deleteById_removesSecondEntry() {
-		// Arrange
 
-		// Act
 		service.deleteById(2);
 		List<Question> result = service.getAll();
 
-		// Assert
 		assertNotNull(result);
 		assertEquals(2, result.size());
 		assertEquals(1, result.get(0).getId());
