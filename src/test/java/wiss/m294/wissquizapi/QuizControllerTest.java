@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 import wiss.m294.wissquizapi.model.Question;
 
-public class QuizControllerTest {
+class QuizControllerTest {
 
     private MockMvc mockMvc;
 

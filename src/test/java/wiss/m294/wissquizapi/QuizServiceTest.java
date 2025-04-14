@@ -20,26 +20,6 @@ class QuizServiceTest {
 	}
 
 
-	@Test
-	void whenCallingGetAll_thenReturnThreeDefaultQuestions() {
-		List<Question> result = service.getAll();
-		assertEquals(3, result.size());
-	}
-
-	@Test
-	void whenAddingValidQuestion_thenAssignsNextId() {
-		Question q = new Question("Was ist Java?", Arrays.asList("Sprache", "Insel", "Auto"), "Sprache");
-		Question result = service.add(q);
-		assertEquals(4, result.getId());
-	}
-
-	@Test
-	void whenDeletingNonExistentQuestion_thenNoChangeOccurs() {
-		int initialSize = service.getAll().size();
-		service.deleteById(999);
-		assertEquals(initialSize, service.getAll().size());
-	}
-
 
 	@Test
 	void getAll_returns3Questions() {
@@ -56,7 +36,7 @@ class QuizServiceTest {
 	@Test
 	void WithNewObject_add_returnsObjectWithId4() {
 		// Arrange
-		Question newQuestion = new Question("NewObject", Arrays.asList("1", "2", "3"), "1");
+		Question newQuestion = new Question("Was ist Java?", Arrays.asList("Sprache", "Insel", "Auto"), "Sprache");
 
 		// Act
 		Question result = service.add(newQuestion);
@@ -79,5 +59,12 @@ class QuizServiceTest {
 		assertEquals(2, result.size());
 		assertEquals(1, result.get(0).getId());
 		assertEquals(3, result.get(1).getId());
+	}
+
+	@Test
+	void whenDeletingNonExistentQuestion_thenNoChangeOccurs() {
+		int initialSize = service.getAll().size();
+		service.deleteById(999);
+		assertEquals(initialSize, service.getAll().size());
 	}
 }
