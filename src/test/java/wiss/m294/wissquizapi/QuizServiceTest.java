@@ -1,16 +1,17 @@
 package wiss.m294.wissquizapi;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import wiss.m294.wissquizapi.model.Question;
 
 class QuizServiceTest {
+	// TZest
 
 	QuizService service;
 
