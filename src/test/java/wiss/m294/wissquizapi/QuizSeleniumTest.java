@@ -2,6 +2,7 @@ package wiss.m294.wissquizapi;
 
 import java.time.Duration;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -19,100 +20,132 @@ public class QuizSeleniumTest {
 
     @BeforeEach
     public void setUp() {
-        // Automatischer Setup vom ChromeDriver
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920x1080");
+        options.addArguments("--headless"); // Kein GUI
 
         driver = new ChromeDriver(options);
     }
 
     @Test
     public void testHomeLoading() {
-        // Testseite öffnen
         driver.get("http://localhost:5173/");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/h2")));
+
+        String headerText = driver.findElement(By.xpath("/html/body/div/div/div[2]/h2")).getText();
+    
+        if (!headerText.equals("Homepage")) {
+            throw new AssertionError("Der Text 'Homepage' wurde nicht angezeigt. Gefundener Text: " + headerText);
+        }
     }
 
     @Test
     public void testClickOnButton() {
-        // Testseite öffnen
         driver.get("http://localhost:5173/");
 
-        // Warten bis der Button sichtbar ist
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[@id='root']/div/div[2]/button")
-        ));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/button")));
 
-        // Button klicken
-        driver.findElement(By.xpath("//*[@id='root']/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/button")).click();
 
-        // Bestätigung
-        System.out.println("Button wurde geklickt.");
+        String buttonText = driver.findElement(By.xpath("/html/body/div/div/div[2]/button")).getText();
+
+        if (!buttonText.equals("3")) {
+            throw new AssertionError("Der Knopf wurde nicht gedrückt. Gefundener Text: " + buttonText);
+        }
     }
 
     @Test
     public void testClickOnRules() {
-        // Testseite öffnen
-        driver.get("http://localhost:5173/rules");
+        driver.get("http://localhost:5173/");
 
-        // Warten bis der Button sichtbar ist
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[@id='root']/div/div[2]/button")
-        ));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[1]/ul/li[3]/a")));
 
-        // Button klicken
-        driver.findElement(By.xpath("//*[@id='root']/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[1]/ul/li[3]/a")).click();
 
-        // Bestätigung
-        System.out.println("Button wurde geklickt.");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/h2")));
+        String rulesText = driver.findElement(By.xpath("/html/body/div/div/div[2]/h2")).getText();
+    
+        if (!rulesText.equals("Rules")) {
+            throw new AssertionError("Die Regeln wurden nicht geöffnet. Gefundener Text: " + rulesText);
+        }
     }
 
     @Test
     public void testStartingWhenSelectingCategory() {
-        // Testseite öffnen
         driver.get("http://localhost:5173/quiz");
 
-        // Warten bis der Button sichtbar ist
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[@id='root']/div/div[2]/button")
-        ));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='test']")));
 
-        // Button klicken
-        driver.findElement(By.xpath("//*[@id='root']/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/button[1]")).click();
 
-        // Bestätigung
-        System.out.println("Button wurde geklickt.");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div[2]")));
+        String quizText = driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[2]")).getText();
+    
+        if (!quizText.equals("Score: 0 von 3")) {
+            throw new AssertionError("Der Quiz konnte nicht geladen werden. Gefundener Text: " + quizText);
+        }
     }
 
     @Test
     public void testQuizAnswerSelect() {
-        // Testseite öffnen
         driver.get("http://localhost:5173/quiz");
 
-        // Warten bis der Button sichtbar ist
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-            By.xpath("//*[@id='root']/div/div[2]/button")
-        ));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='test']")));
 
-        // Button klicken
-        driver.findElement(By.xpath("//*[@id='root']/div/div[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/button[1]")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[2]")));
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[2]")).click();
 
-        // Bestätigung
-        System.out.println("Button wurde geklickt.");
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")));
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")).click();
+    
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[3]")));
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[3]")).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")));
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")).click();
+    
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[2]")));
+        driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button[2]")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")));
+        String buttonText = driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[3]/button")).getText();
+    
+        if (!buttonText.equals("View Score")) {
+            throw new AssertionError("Der Quiz konnte nicht gelöst werden. Gefundener Text: " + buttonText);
+        }
     }
 
     @Test
     public void testError404Site() {
-        // Testseite öffnen
         driver.get("http://localhost:5173/erro");
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/div/div[2]/div/div")));
 
+        String erroText1 = driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/h1[1]")).getText();
+        String erroText2 = driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div/h1[2]")).getText();
+
+        String erroText = erroText1 + " " + erroText2;
+    
+        if (!erroText.equals("404 Error Page Not Found")) {
+            throw new AssertionError("Der Text '404 Error Page Not Found' wurde nicht angezeigt. Gefundener Text: " + erroText);
+        }
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit(); // Browser schließen
+        }
     }
 }
