@@ -44,14 +44,16 @@ public class NeueFragehinzufuegenTest {
         driver.findElement(By.name("answer1")).sendKeys("15");
         driver.findElement(By.name("answer2")).sendKeys("10");
         driver.findElement(By.name("answer3")).sendKeys("20");
-        driver.findElement(By.name("correctAnswer")).sendKeys("15");
+        List<WebElement> radioButtons = driver.findElements(By.name("correctAnswer"));
+        radioButtons.get(0).click();
 
         // Formular absenden (erster Button auf Seite)
         driver.findElement(By.cssSelector("button")).click();
 
         // OPTIONAL: Überprüfung – z. B. auf Erfolgsmeldung oder neue Frage in Liste
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(text(), 'Was ist 5 * 3?')]")));
-        List<WebElement> results = driver.findElements(By.xpath("//div[contains(text(), 'Was ist 5 * 3?')]"));
+        //
+wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//li[contains(text(), 'Was ist 5 * 3?')]")));
+        List<WebElement> results = driver.findElements(By.xpath("//li[contains(text(), 'Was ist 5 * 3?')]"));
 
         if (results.isEmpty()) {
             throw new AssertionError("Die neue Frage wurde nicht hinzugefügt oder nicht angezeigt.");
